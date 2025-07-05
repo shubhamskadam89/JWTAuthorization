@@ -39,7 +39,7 @@ public class HomeController {
     private AuthenticationManager authenticationManager;
 
 
-    // 🔒 USER: Get a single user by index
+    //  USER: Get a single user by index
     // URL: https://localhost:8080/user/{index}
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/{uID}")
@@ -48,7 +48,7 @@ public class HomeController {
     }
 
 
-    // 🔒 ADMIN: Get the whole user list
+    //  ADMIN: Get the whole user list
     // URL: https://localhost:8080/admin
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
