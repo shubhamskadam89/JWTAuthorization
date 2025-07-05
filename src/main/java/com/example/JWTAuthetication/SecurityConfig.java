@@ -101,14 +101,17 @@ public class SecurityConfig {
                     .build();
 
             UserDetails admin = User.withUsername("admin")
-                    //.password(passwordEncoder().encode("adminPass")) // commented version
                     .password(passwordEncoder().encode("adminPass"))
                     .roles("ADMIN")
                     .build();
 
-            JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager(dataSource);
-            userDetailsManager.createUser(user1);
-            userDetailsManager.createUser(admin);
+            if (!manager.userExists("user1")) {
+                manager.createUser(user1);
+            }
+
+            if (!manager.userExists("admin")) {
+                manager.createUser(admin);
+            }
         };
     }
 
