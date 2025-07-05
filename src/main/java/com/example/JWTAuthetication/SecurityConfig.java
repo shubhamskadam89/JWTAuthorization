@@ -112,6 +112,7 @@ public class SecurityConfig {
             if (!manager.userExists("admin")) {
                 manager.createUser(admin);
             }
+
         };
     }
 

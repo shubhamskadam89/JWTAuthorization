@@ -13,5 +13,6 @@ public class BookingRequest {
     private IssueType issueType;
     private int numAmbulances;
     private int numPoliceUnits;
+    private int numFireUnits;
 }
 

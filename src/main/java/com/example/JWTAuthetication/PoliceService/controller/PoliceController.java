@@ -32,9 +32,6 @@ public class PoliceController {
         return service.updateAvailability(id, available);
     }
 
-    @PostMapping("/assign")
-    public PoliceStation assign(@RequestParam double lat, @RequestParam double lng) {
-        return service.assignUnit(lat, lng);
-    }
+
 }
 

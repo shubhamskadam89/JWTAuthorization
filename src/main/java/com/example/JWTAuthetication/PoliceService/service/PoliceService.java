@@ -34,21 +34,4 @@ public class PoliceService {
         return repository.save(ps);
     }
 
-    public PoliceStation assignUnit(double lat, double lng) {
-        int MIN_REQUIRED = 2;
-        List<PoliceStation> candidates = repository.findByAvailableOfficersGreaterThan(MIN_REQUIRED);
-
-        return candidates.stream()
-                .min(Comparator.comparingDouble(p -> distance(lat, lng, p.getLatitude(), p.getLongitude())))
-                .map(station -> {
-                    station.setAvailableOfficers(station.getAvailableOfficers() - 1);
-                    station.setLastUpdated(Instant.now());
-                    return repository.save(station);
-                })
-                .orElseThrow(() -> new RuntimeException("No available police station with minimum officers"));
-    }
-
-    private double distance(double lat1, double lon1, double lat2, double lon2) {
-        return Math.sqrt(Math.pow(lat1 - lat2, 2) + Math.pow(lon1 - lon2, 2));
-    }
 }

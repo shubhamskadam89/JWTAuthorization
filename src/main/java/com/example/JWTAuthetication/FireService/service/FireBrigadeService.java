@@ -6,9 +6,12 @@ import lombok.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+
+import static java.awt.geom.Point2D.distance;
 
 @Service
 @AllArgsConstructor @Getter @Setter @ToString
@@ -56,4 +59,7 @@ public class FireBrigadeService {
     public List<FireBrigadeUnit> getAllUnits() {
         return fireRepo.findAll();
     }
+
+
+
 }

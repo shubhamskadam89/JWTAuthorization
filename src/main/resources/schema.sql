@@ -48,7 +48,22 @@ CREATE TABLE IF NOT EXISTS booking_log (
     longitude DOUBLE PRECISION NOT NULL,
     requested_ambulances INT,
     requested_police_units INT,
+    requested_fire_units INT,
     assigned_ambulance_ids TEXT,
     assigned_police_station_ids TEXT,
+    assigned_fire_unit_ids TEXT,
+    completed BOOLEAN NOT NULL DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+CREATE TABLE IF NOT EXISTS fire_brigade_unit (
+    id SERIAL PRIMARY KEY,
+    unit_number VARCHAR(100) NOT NULL,
+    station_name VARCHAR(100),
+    status VARCHAR(30) NOT NULL,
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    last_updated TIMESTAMP
+);
+
