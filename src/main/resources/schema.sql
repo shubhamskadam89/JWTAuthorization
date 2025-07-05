@@ -1,9 +1,5 @@
--- Drop if exists
-DROP TABLE IF EXISTS users CASCADE;
-DROP TABLE IF EXISTS authorities CASCADE;
-
 -- USERS TABLE
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(500) NOT NULL,
@@ -11,19 +7,18 @@ CREATE TABLE users (
     enabled BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- AUTHORITIES / ROLES TABLE
-CREATE TABLE authorities (
+-- AUTHORITIES TABLE
+CREATE TABLE IF NOT EXISTS authorities (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
     authority VARCHAR(50) NOT NULL,
     CONSTRAINT fk_authorities_users FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
 );
 
--- UNIQUE index for combination
-CREATE UNIQUE INDEX ix_auth_username ON authorities (username, authority);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_auth_username ON authorities (username, authority);
 
 -- AMBULANCE TABLE
-CREATE TABLE ambulance (
+CREATE TABLE IF NOT EXISTS ambulance (
     id SERIAL PRIMARY KEY,
     reg_number VARCHAR(100) NOT NULL,
     driver_name VARCHAR(100),
@@ -31,4 +26,29 @@ CREATE TABLE ambulance (
     latitude DOUBLE PRECISION,
     longitude DOUBLE PRECISION,
     last_updated TIMESTAMP
+);
+
+-- POLICE STATION TABLE
+CREATE TABLE IF NOT EXISTS police_station (
+    id SERIAL PRIMARY KEY,
+    station_name VARCHAR(100) NOT NULL,
+    zone VARCHAR(50),
+    total_officers INT NOT NULL,
+    available_officers INT NOT NULL,
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    last_updated TIMESTAMP
+);
+
+-- BOOKING LOG TABLE (optional)
+CREATE TABLE IF NOT EXISTS booking_log (
+    id SERIAL PRIMARY KEY,
+    issue_type VARCHAR(50) NOT NULL,
+    latitude DOUBLE PRECISION NOT NULL,
+    longitude DOUBLE PRECISION NOT NULL,
+    requested_ambulances INT,
+    requested_police_units INT,
+    assigned_ambulance_ids TEXT,
+    assigned_police_station_ids TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
