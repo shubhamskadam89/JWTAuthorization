@@ -41,12 +41,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(authorizeRequests ->
-                authorizeRequests
-                        .requestMatchers("/api/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/signin").permitAll()
-                        .anyRequest().authenticated()
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/api/**",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/webjars/**",
+                        "/h2-console/**",
+                        "/signin",
+                        "/signup"
+                ).permitAll()
+                .anyRequest().authenticated()
         );
 
         http.sessionManagement(session ->
@@ -57,19 +64,23 @@ public class SecurityConfig {
                 exception.authenticationEntryPoint(unauthorizedHandler)
         );
 
-        // Disable basic auth (commented)
-        // http.httpBasic(withDefaults());
+        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/h2-console/**"
+                ).disable()
+        );
 
         http.headers(headers ->
                 headers.frameOptions(frameOptions -> frameOptions.sameOrigin())
         );
 
-        http.csrf(csrf -> csrf.disable());
-
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
+
 
 
     // **** cmnted bcoz we want application to run after all initialization
